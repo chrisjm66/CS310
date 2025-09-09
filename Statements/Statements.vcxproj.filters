@@ -18,5 +18,8 @@
     <ClCompile Include="Statements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InputOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

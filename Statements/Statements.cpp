@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int main() {
+int program() {
     cout << "Happy Friday!\n";
     cout << "Hello c++!";
     cout << endl;
