@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-int main() {
+int main1() {
 	int x, y; // same as java, you can declare multiple variables
 	cout << (x = 2) << endl; // this is another way to initialize a variable in c++
 	y = x;
@@ -52,4 +52,6 @@ int main() {
 
 	cout << age << endl;
 	cout << "Will age get a new value? " << age << endl;
+
+	return 0;
 }
