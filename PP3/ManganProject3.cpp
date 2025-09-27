@@ -1,5 +1,5 @@
 // Chris Mangan
-// Project #2
+// Project #3
 #include<iostream>
 #include<string>
 #include <iomanip>
@@ -21,6 +21,7 @@ T getInput(const string& prompt) { // const doesn't let it change (final) and we
 		cout << "Invalid entry, please try again.";
 		cin >> input;
 	}
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 	return input;
 }
@@ -30,7 +31,6 @@ string getInput<string>(const string& prompt) {
 	string input;
 	cout << prompt << endl;
 	getline(cin, input);
-
 	return input;
 }
 
@@ -45,42 +45,54 @@ char getGender(const string& prompt) {
 		cin.ignore(numeric_limits<streamsize>::max(), '\n'); // this ignores the max length of the stream size
 		cin >> gender;
 	}
+
+	return gender;
 }
 
 char getUserOption(bool reprompt = false) {
 	string prompt;
 	if (reprompt) {
-		prompt = string("Please select an option: [A]dd data; [R]ecent Data; [E]xit program");
+		prompt = string("The selected option is invalid.");
 	}
 	else {
-		prompt = string("Please enter a valid option.");
+		prompt = string("Please select an option: [A]dd data; [R]ecent Data; [E]xit program");
 	}
 
-	char selection = getInput<char>(prompt);
-
-
-	return selection;
+	return getInput<char>(prompt);
 }
 
-string addData() {
-	double weight = getInput<double>("Please enter your weight in kg.");
-	double height = getInput<double>("Please enter your height in meters.");
-	string exerciseType = getInput<string>("Please enter your exercise type (eg. running, walking, lifting).");
-	int time = getInput<int>("Please enter your exercise time in minutes.");
-
-	string data = "Weight: " + weight + "kg, BMI: " + setprecision(2) + weight / (height * height) + " kg/m2" + endl + "Exercise: " + exerciseType + " (" << time << "mins)" << endl;
+void addData(double& weight, double& height, string& exerciseType, int& time) {
+	weight = getInput<double>("Please enter your weight in kg.");
+	height = getInput<double>("Please enter your height in meters.");
+	time = getInput<int>("Please enter your exercise time in minutes.");
+	exerciseType = getInput<string>("Please enter your exercise type (eg. running, walking, lifting).");
 }
 
+void printRecentData(
+	const string& name,
+	const char& gender,
+	const int& age,
+	const double& weight, 
+	const double& height, 
+	const string& exerciseType, 
+	const int& exerciseTime) {
+
+	cout << "\t" << name << endl;
+	cout << gender << ", " << age << ", " << height << "m" << endl;
+	cout << "Weight: " << weight << "kg, BMI: " << weight / (height * height) << " kg/m2" << endl;
+	cout << "Exercise: " << exerciseType << " (" << exerciseTime << "mins)" << endl;
+}
 int main() {
 	string name, exerciseType;
 	int age, exerciseTime;
 	char gender, userOption;
-	bool isValidUserOption;
+	bool isValidUserOption, userEnteredData = false;
+	double height, weight;
 
 	name = getInput<string>("Please enter your name.");
 	gender = getGender("Please enter your gender (M/F).");
 	age = getInput<int>("Please enter your age.");
-	height = getInput<int>("Please enter your height in meters.");
+	
 	userOption = getUserOption();
 	
 	while (true) {
@@ -91,14 +103,22 @@ int main() {
 			break;
 		case 'A':
 		case 'a':
-			addData();
+			addData(weight, height, exerciseType, exerciseTime);
+			userOption = getUserOption();
+			userEnteredData = true;
 			break;
 		case 'R':
 		case 'r':
-			showRecentData();
+			if (userEnteredData) {
+				printRecentData(name, gender, age, weight, height, exerciseType, exerciseTime);
+			}
+			else {
+				cout << "There is no fitness data to print." << endl; // we use exerciseType since it will always be null
+			}
+			userOption = getUserOption();
 			break;
 		default:
-			getUserOption(true);
+			userOption = getUserOption(true);
 		}
 	}
 
