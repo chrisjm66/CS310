@@ -61,9 +61,8 @@ char getUserOption(bool reprompt = false) {
 	return getInput<char>(prompt);
 }
 
-void addData(double& weight, double& height, string& exerciseType, int& time) {
+void addData(double& weight, string& exerciseType, int& time) {
 	weight = getInput<double>("Please enter your weight in kg.");
-	height = getInput<double>("Please enter your height in meters.");
 	time = getInput<int>("Please enter your exercise time in minutes.");
 	exerciseType = getInput<string>("Please enter your exercise type (eg. running, walking, lifting).");
 }
@@ -82,6 +81,7 @@ void printRecentData(
 	cout << "Weight: " << weight << "kg, BMI: " << weight / (height * height) << " kg/m2" << endl;
 	cout << "Exercise: " << exerciseType << " (" << exerciseTime << "mins)" << endl;
 }
+
 int main() {
 	string name, exerciseType;
 	int age, exerciseTime;
@@ -92,6 +92,7 @@ int main() {
 	name = getInput<string>("Please enter your name.");
 	gender = getGender("Please enter your gender (M/F).");
 	age = getInput<int>("Please enter your age.");
+	height = getInput<double>("Please enter your height in meters.");
 	
 	userOption = getUserOption();
 	
@@ -103,7 +104,7 @@ int main() {
 			break;
 		case 'A':
 		case 'a':
-			addData(weight, height, exerciseType, exerciseTime);
+			addData(weight, exerciseType, exerciseTime);
 			userOption = getUserOption();
 			userEnteredData = true;
 			break;
@@ -121,13 +122,6 @@ int main() {
 			userOption = getUserOption(true);
 		}
 	}
-
-	
-
-	// copied from project 1
-	cout << "\t" << name << endl;
-	cout << fixed << setprecision(2) << gender << ", " << age << ", " << height << "m" << endl;
-	
 
 	return 0;
 }
