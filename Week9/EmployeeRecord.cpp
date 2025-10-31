@@ -34,7 +34,7 @@ int searchEmployee(const Employee employees[], int employeeId, int size) {
 	return -1;
 }
 
-int main() {
+int main1() {
 	int size = 0;
 	cout << "Enter # of employees: " << endl;
 	cin >> size;
