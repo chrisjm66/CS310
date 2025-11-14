@@ -1,17 +1,18 @@
+#pragma once
 #include <string>
-#pragma
 
 using namespace std;
 
 class Course {
 private:
+	static int numCourses;
 	string name;
 	string* students;
 	int numStudents;
 	int capacity;
 	void expandArray();
 	void removeElement(int index);
-	void append();
+	void append(string value);
 
 public:
 	Course(const string& name, int capacity);
@@ -31,4 +32,8 @@ public:
 	void printStudents();
 
 	int getNumStudents();
+
+	static int getNumOfCourses();
+
+	string toString();
 };

@@ -1,10 +1,12 @@
+#include "Course.h"
 #include <string>
 #include <iostream>
-#include "Course.h"
 
 using namespace std;
 
-void expandArray(string value) {
+int Course::numCourses = 0;
+
+void Course::expandArray() {
 	if (capacity == 0) {
 		capacity = 1;
 	}
@@ -19,7 +21,7 @@ void expandArray(string value) {
 	students = newArray;
 }
 
-void removeElement(int index) {
+void Course::removeElement(int index) {
 	if (index >= numStudents || index < 0 || numStudents <= 0) {
 		throw new bad_array_new_length();
 	}
@@ -51,9 +53,9 @@ void removeElement(int index) {
 	}
 }
 
-void append(int numStudents, int capacity, string* students, string value) {
+void Course::append(string value) {
 	if (numStudents == capacity) {
-		expandArray(capacity, numStudents, students);
+		expandArray();
 	}
 
 	students[numStudents] = value;
@@ -62,9 +64,10 @@ void append(int numStudents, int capacity, string* students, string value) {
 
 Course::Course(const string& name, int capacity) {
 	this->name = name;
-	capacity = capacity;
+	this->capacity = capacity;
 	students = new string[capacity];
 	numStudents = 0;
+	numCourses++;
 }
 
 Course::Course(const Course& course) {
@@ -76,24 +79,30 @@ Course::Course(const Course& course) {
 	for (int i = 0; i < numStudents; i++) {
 		this->students[i] = course.students[i];
 	}
+	
+	numCourses++;
 }
 
-Course& Course::operator = (const Course& other) {
+Course& Course::operator= (const Course& other) {
 	if (this != &other) {
 		// release old array
 		delete[] this->students;
 		this->numStudents = other.numStudents;
 		this->capacity = other.capacity;
-		this->name = name;
-		this->students = new string[capacity];
+		this->name = other.name;
+		this->students = new string[other.capacity];
 
 		for (int i = 0; i < numStudents; i++) {
 			this->students[i] = other.students[i];
 		}
+
 	}
+
+	return *this;
 }
 
 Course::~Course() {
+	numCourses--;
 	delete[] students;
 }
 
@@ -102,13 +111,13 @@ string Course::getCourseName() {
 }
 
 void Course::enroll(const string& studentName) {
-	append(this->numStudents, this->capacity, this->students, studentName);
+	append(studentName);
 }
 
 void Course::drop(const string& studentName) {
 	for (int i = 0; i < numStudents; i++) {
 		if (students[i] == studentName) {
-			removeElement(numStudents, students, capacity, i);
+			removeElement(i);
 			break;
 		}
 	}
@@ -126,4 +135,18 @@ void Course::printStudents() {
 
 int Course::getNumStudents() {
 	return this->numStudents;
+}
+
+int Course::getNumOfCourses() {
+	return numCourses;
+}
+
+string Course::toString() {
+	string str = name + " " + to_string(capacity);
+
+	for (int i = 0; i < numStudents; i++) {
+		str += " " + students[i];
+	}
+
+	return str;
 }
