@@ -18,5 +18,8 @@
     <ClCompile Include="ManganProject5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ManganProject6.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

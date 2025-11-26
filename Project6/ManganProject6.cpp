@@ -1,11 +1,23 @@
 // Chris Mangan
-// Project #5
-
+// Project #6
 #include<iostream>
 #include<string>
 #include <iomanip>
 #include <cmath>
 using namespace std;
+
+struct User {
+	string name;
+	double height;
+	char gender;
+	int age;
+};
+
+struct FitnessRecord {
+	double weight;
+	int exerciseTime;
+	string exerciseType;
+};
 
 bool isGenderValid(char gender) {
 	return gender == 'm' || gender == 'M' || gender == 'f' || gender == 'F';
@@ -89,38 +101,40 @@ T* insertItem(T array[], T item, const int& index, int& size) {
 	return array;
 }
 
-void addData(double*& weights, string*& exerciseTypes, int*& times, int& size, int& index) {
-	double newWeight = getInput<double>("Please enter your weight in kg.");
-	int newTime = getInput<int>("Please enter your exercise time in minutes.");
-	string newExerciseType = getInput<string>("Please enter your exercise type (eg. running, walking, lifting).");
+void addData(FitnessRecord*& fitnessRecords, int& size, int& index) {
+	double weight = getInput<double>("Please enter your weight in kg.");
+	int time = getInput<int>("Please enter your exercise time in minutes.");
+	string exerciseType = getInput<string>("Please enter your exercise type (eg. running, walking, lifting).");
 
 	index++;
-
+	cout << index << endl;
 	if (size == index) { // double array sizes if index == size
-		weights = resizeArray(weights, size);
-		exerciseTypes = resizeArray(exerciseTypes, size);
-		times = resizeArray(times, size);
+		fitnessRecords = resizeArray(fitnessRecords, size);
+		cout << "resized" << endl;
 		size *= 2;
 	}
 
-	weights = insertItem(weights, newWeight, index, size);
-	exerciseTypes = insertItem(exerciseTypes, newExerciseType, index, size);
-	times = insertItem(times, newTime, index, size);
+	FitnessRecord newRecord;
+	newRecord.exerciseTime = time;
+	newRecord.weight = weight;
+	newRecord.exerciseType = exerciseType;
+
+	fitnessRecords = insertItem(fitnessRecords, newRecord, index, size);
 }
 
-void printBasicInfo(const string& name, const char& gender, const int& age, const double& height) {
-	cout << "\tName: " << name << endl;
-	cout << "Gender: " << gender << ", Age: " << age << ", Height: " << height << "m" << endl;
+void printBasicInfo(const User& user) {
+	cout << "\tName: " << user.name << endl;
+	cout << "Gender: " << user.gender << ", Age: " << user.age << ", Height: " << user.height << "m" << endl;
+}
+
+void printFitnessRecord(const User& user, const FitnessRecord& record) {
+	cout << "Weight: " << record.weight << "kg, BMI: " << record.weight / (user.height * user.height) << " kg/m2" << endl;
+	cout << "Exercise: " << record.exerciseType << " (" << record.exerciseTime << "mins)" << endl;
 }
 
 void printHistoryData(
-	const string& name,
-	const char& gender,
-	const int& age,
-	const double weights[],
-	const double& height,
-	const string exerciseTypes[],
-	const int exerciseTimes[],
+	const User& user,
+	const FitnessRecord* fitnessRecord,
 	const int& index) {
 
 	if (index == -1) {
@@ -128,24 +142,20 @@ void printHistoryData(
 		return;
 	}
 
-	printBasicInfo(name, gender, age, height);
+	printBasicInfo(user);
 	cout << "------------------" << endl;
 
-	for (int i = 0; i < index + 1; i++) { // the min function is to prevent bad data being displayed if the user enters less than 7 pieces of data
-		cout << "Weight: " << weights[i] << "kg, BMI: " << weights[i] / (height * height) << " kg/m2" << endl;
-		cout << "Exercise: " << exerciseTypes[i] << " (" << exerciseTimes[i] << "mins)" << endl;
+	for (int i = 0; i <= index; i++) {
+		FitnessRecord record = fitnessRecord[i];
+
+		printFitnessRecord(user, record);
 		cout << "---------------------------------------------------------------" << endl;
 	}
 }
 
 void printRecentData(
-	const string& name,
-	const char& gender,
-	const int& age,
-	const double weights[],
-	const double& height,
-	const string exerciseTypes[],
-	const int exerciseTimes[],
+	const User user,
+	const FitnessRecord* fitnessRecords,
 	const int& index) {
 
 	if (index == -1) {
@@ -153,32 +163,30 @@ void printRecentData(
 		return;
 	}
 
-	printBasicInfo(name, gender, age, height);
+	FitnessRecord record = fitnessRecords[index];
 
-	cout << "Weight: " << weights[index] << "kg, BMI: " << weights[index] / (height * height) << " kg/m2" << endl;
-	cout << "Exercise: " << exerciseTypes[index] << " (" << exerciseTimes[index] << "mins)" << endl;
+	printBasicInfo(user);
+
+	printFitnessRecord(user, record);
 }
 
-void getBasicInfo(string& name, char& gender, int& age, double& height) {
-	name = getInput<string>("Please enter your name.");
-	gender = getGender("Please enter your gender (M/F).");
-	age = getInput<int>("Please enter your age.");
-	height = getInput<double>("Please enter your height in meters.");
+User getBasicInfo() {
+	string name = getInput<string>("Please enter your name.");
+	char gender = getGender("Please enter your gender (M/F).");
+	int age = getInput<int>("Please enter your age.");
+	double height = getInput<double>("Please enter your height in meters.");
+
+	User user = {name, height, gender, age};
+	return user;
 }
 
-int main1() {
+int main() {
 	int size = 1;
 	int index = -1;
-	int* exerciseTimes = new int[size];
-	double* weights = new double[size];
-	string* exerciseTypes = new string[size];
+	FitnessRecord* fitnessRecords = new FitnessRecord[size];
 
-	string name;
-	int age;
-	char gender, userOption;
-	double height;
-
-	getBasicInfo(name, gender, age, height);
+	char userOption;
+	User user = getBasicInfo();
 
 	userOption = getOption();
 
@@ -190,17 +198,17 @@ int main1() {
 			break;
 		case 'A':
 		case 'a':
-			addData(weights, exerciseTypes, exerciseTimes, size, index);
+			addData(fitnessRecords, size, index);
 			userOption = getOption();
 			break;
 		case 'R':
 		case 'r':
-			printRecentData(name, gender, age, weights, height, exerciseTypes, exerciseTimes, index);
+			printRecentData(user, fitnessRecords, index);
 			userOption = getOption();
 			break;
 		case 'V':
 		case 'v':
-			printHistoryData(name, gender, age, weights, height, exerciseTypes, exerciseTimes, index);
+			printHistoryData(user, fitnessRecords, index);
 			userOption = getOption();
 			break;
 		default:
