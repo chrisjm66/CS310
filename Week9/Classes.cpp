@@ -11,6 +11,9 @@ private:
 	int size;
 
 	void expandArray() {
+		if (capacity == 0) {
+			capacity = 1;
+		}
 		T* newArray = new T[capacity * 2];
 
 		for (int i = 0; i < size; i++) {
@@ -23,6 +26,35 @@ private:
 	}
 
 public:
+	// overload assignment operator
+	ArrayList<T>& operator = (const ArrayList<T>& other) {
+		if (this != &other) {
+			// release old array
+			delete[] this->array;
+			this->size = other.size;
+			this->capacity = other.capacity;
+			this->array = new T[capacity];
+
+			for (int i = 0; i < size; i++) {
+				this->array[i] = other.array[i];
+			}
+		}
+
+		return *this;
+	}
+
+	// copy constructor, auto called when a copy is made
+	ArrayList(const ArrayList<T>& obj) {
+		this->size = obj.size;
+		this->capacity = obj.capacity;
+		this->array = new T[capacity];
+
+		for (int i = 0; i < size; i++) {
+			array[i] = obj.array[i];
+		}
+
+	}
+
 	ArrayList() {
 		size = 0;
 		capacity = 2;
@@ -31,12 +63,16 @@ public:
 
 	ArrayList(int size, T initialValue) {
 		this->size = size;
-		capacity = capacity;
+		capacity = size;
 		array = new T[capacity];
 
 		for (int i = 0; i < size; i++) {
 			array[i] = initialValue;
 		}
+	}
+
+	~ArrayList() {
+		delete[] array;
 	}
 
 	void append(T value) {
@@ -50,7 +86,7 @@ public:
 
 	void insert(T value, int index) {
 		if (index > size || index < 0) {
-			throw new bad_array_new_length();
+			cout << "Index not valid" << endl;
 		}
 
 		if (size == capacity) {
@@ -134,4 +170,9 @@ int main() {
 	a.append(67);
 	cout << a.removeElement(3) << endl;
 	cout << a.getSize() << endl;
+
+	//ArrayList<int> b = a; // calls copy constructor
+	ArrayList<int> b;
+	b = a;
+	cout << b.getSize() << endl;
 }
