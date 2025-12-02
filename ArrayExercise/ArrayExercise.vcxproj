@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4448ef51-de3f-4482-8213-4c93317aeb0b}</ProjectGuid>
-    <RootNamespace>Week4</RootNamespace>
+    <ProjectGuid>{b7aac8b7-bc18-4778-964b-a45618ab3223}</ProjectGuid>
+    <RootNamespace>ArrayExercise</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,8 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Arrays.cpp" />
-    <ClCompile Include="CompoundInterest.cpp" />
+    <ClCompile Include="ArrayExercise.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
