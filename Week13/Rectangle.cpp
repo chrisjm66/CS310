@@ -1,6 +1,6 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle():Shape() {
+Rectangle::Rectangle():Shape() { // this turns it into a shape object too
 	width = length = 1;
 }
 
@@ -30,7 +30,11 @@ void Rectangle::setWidth(const double& newWid) {
 	width = newWid;
 }
 
+double Rectangle::getArea() {
+	return length * width;
+}
+
 string Rectangle::toString() {
-	return "Rectangle at " + to_string(getLocation().getX()) + ", " + to_string(getLocation().getY()) + " with color " + getColor() +
-		", length " + to_string(length) + ", width " + to_string(width);
+	return Shape::toString() +
+		", rectangle length " + to_string(length) + ", width " + to_string(width);
 }

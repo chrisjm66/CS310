@@ -16,6 +16,7 @@ public:
 	Point getLocation();
 	void setColor(const string& newColor);
 	void move(double deltaX, double deltaY);
-	string toString();
+	virtual string toString(); // polymorphic function
+	virtual double getArea();
 };
 
