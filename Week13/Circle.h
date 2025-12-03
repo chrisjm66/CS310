@@ -1,20 +1,20 @@
 #pragma once
 #include "Point.h"
-class Circle
+#include "Shape.h"
+
+class Circle: public Shape
 {
 private:
 	double radius;
-	Point center;
 public:
 	Circle();
-	Circle(double initialR, Point& c);
+	Circle(double initialR, Point& c, string color);
 	double getRadius();
-	Point getCenter();
 	void setRadius(double newR);
-	void move(Point& newC);
-	void move(double deltaX, double deltaY);
 	void print();
+	string toString();
 	bool operator==(Circle& other);
+	double getArea();
 	~Circle();//destructor
 };
 

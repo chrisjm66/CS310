@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Rectangle: public Shape
+class Rectangle: public Shape // is a relationship (inheritance)
 {
 private:
 	double length;
@@ -20,6 +20,7 @@ public:
 	double getWidth();
 	void setLength(const double& newLen);
 	void setWidth(const double& newWid);
+	double getArea();
 
 	string toString();
 };

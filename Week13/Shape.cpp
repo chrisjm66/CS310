@@ -30,6 +30,10 @@ void Shape::move(double deltaX, double deltaY) {
 	location.setY(location.getY() + deltaY);
 }
 
+double Shape::getArea() {
+	return 0.0;
+}
+
 string Shape::toString() {
-	return "Circle at " + to_string(location.getX()) + ", " + to_string(location.getY()) + " with color " + color;
+	return to_string(location.getX()) + ", " + to_string(location.getY()) + " with color " + color;
 }
